@@ -12,7 +12,7 @@ class ImplanteMedico:
         try:
             datetime.datetime.strptime(fecha_implantacion, "%Y-%m-%d")
         except ValueError:
-            print("La fecha de implantación no es válida. debe ser de tipo 'YYYY-MM-DD'.")
+            print("La fecha de implantación no es válida. Debe ser de tipo 'YYYY-MM-DD'.")
             return
         self.__fecha_implantacion = fecha_implantacion
 
@@ -181,6 +181,13 @@ class SistemaImplantes:
         self.set_medico_responsable(implante, medico_responsable)
         self.set_estado_implante(implante, estado_implante)
 
+    def registrar_medico_responsable(self, implante, medico_responsable):
+        implante.set_medico_responsable(medico_responsable)
+
+    def registrar_estado_implante(self, implante, estado_implante):
+        implante.set_estado_implante(estado_implante)
+
+
     def realizar_seguimiento_vida_util_implante(self, implante, fechas_revision, mantenimiento):
         pass
     
@@ -198,8 +205,14 @@ def mostrar_menu():
 def agregar_implante(sistema):
     tipo = input("Tipo de implante: ")
     funcion = input("Función del implante: ")
-    paciente = input("Nombre del paciente: ")
-    implante = ImplanteMedico(tipo, funcion, paciente)
+    paciente_nombre = input("Nombre del paciente: ")
+    fecha_implantacion = input("Fecha de implantación (YYYY-MM-DD): ")
+    medico_responsable = input("Médico responsable: ")
+    estado_implante = input("Estado del implante: ")
+
+    paciente = Paciente(paciente_nombre)
+    implante = ImplanteMedico(tipo, funcion)
+    sistema.asociar_implante_paciente(implante, paciente, fecha_implantacion, medico_responsable, estado_implante)
     sistema.lista_implantes.append(implante)
     print("Implante agregado exitosamente.")
 
@@ -212,25 +225,70 @@ def eliminar_implante(sistema):
             return
     print("No se encontró ningún implante con el tipo especificado.")
 
-def editar_implante(sistema):
-    tipo = input("Ingrese el tipo de implante que desea editar: ")
-    for implante in sistema.lista_implantes:
-        if implante.tipo == tipo:
-            # falta proceso para ediatr implante
-            print("Información del implante editada exitosamente.")
-            return
-    print("No se encontró ningún implante con el tipo especificado.")
+def editar_implante(self, tipo_implante):
+        for implante in self.lista_implantes:
+            if implante.get_tipo() == tipo_implante:
+                print(f"Implante actual de {tipo_implante}:")
+                print(f"Tipo: {implante.get_tipo()}")
+                print(f"Función: {implante.get_funcion()}")
+                print(f"Paciente: {implante.get_paciente()}")
+                print(f"Fecha de Implantación: {implante.get_fecha_implantacion()}")
+                print(f"Médico Responsable: {implante.get_medico_responsable()}")
+                print(f"Estado del Implante: {implante.get_estado_implante()}")
+                
+                while True: 
+                    editar = int(input("""" ¿que desea editar?
+                                    1. tipo 
+                                    2. funcion
+                                    3. paciente
+                                    4. fecha de implantación
+                                    5. medico responsable
+                                    6. estado del implante 
+                                    7. salir
+                                    > """))
+                    if editar == 1: 
+                        print("\nIngrese los nuevos datos del implante:")
+                        tipo = input("Nuevo Tipo: ")
+                        implante.set_tipo(tipo)
+                        print(f"Implante de {tipo_implante} editado exitosamente.")
+                    elif editar == 2: 
+                        print("\nIngrese los nuevos datos del implante:")
+                        funcion = input("Nueva Función: ")
+                        implante.set_funcion(funcion)
+                    elif editar == 3: 
+                        print("\nIngrese los nuevos datos del implante:")
+                        paciente = input("Nuevo Paciente: ")
+                        implante.set_paciente(paciente)
+                    elif editar == 4: 
+                        print("\nIngrese los nuevos datos del implante:")
+                        fecha_implantacion = input("Nueva Fecha de Implantación (YYYY-MM-DD): ")
+                        implante.set_fecha_implantacion(fecha_implantacion)
+                    elif editar == 5:
+                        print("\nIngrese los nuevos datos del implante:")
+                        medico_responsable = input("Nuevo Médico Responsable: ")
+                        implante.set_medico_responsable(medico_responsable)
+                    elif editar == 6: 
+                        print("\nIngrese los nuevos datos del implante:")
+                        estado_implante = input("Nuevo Estado del Implante: ")
+                        implante.set_estado_implante(estado_implante)
+                    elif editar == 7: 
+                        break 
+                    else: 
+                        print("Opción no válida.vuelva a intentarlo")
+        print(f"No se encontró ningún implante de {tipo_implante}.")
 
 def visualizar_inventario(sistema):
     print("\nInventario de Implantes:")
     for implante in sistema.lista_implantes:
-        print(f"Tipo: {implante.tipo}, Función: {implante.funcion}, Paciente: {implante.paciente}")
+        print(f"""Tipo: {implante.tipo}
+                Función: {implante.funcion}
+                Paciente: {implante.paciente}""")
 
 def main():
     sistema = SistemaImplantes()
     while True:
         mostrar_menu()
-        opcion = input("\nIngrese el número de la opción que desea: ")
+        opcion = int(input("\nIngrese una de las siguientes opciones: "))
         if opcion == 1:
             agregar_implante(sistema)
         elif opcion == 2:
