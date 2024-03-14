@@ -1,5 +1,5 @@
 import datetime
-class ImplanteMedico:
+class ImplanteMedico: #creando la clasee implante medico 
     def __init__(self, tipo, funcion, paciente):
         self.__tipo = tipo
         self.__funcion = funcion
@@ -8,6 +8,7 @@ class ImplanteMedico:
         self.__medico_responsable = None
         self.__estado_implante = None
 
+   #Metodos de la clase
     def set_fecha_implantacion(self, fecha_implantacion):
         try:
             datetime.datetime.strptime(fecha_implantacion, "%Y-%m-%d")
@@ -46,13 +47,15 @@ class ImplanteMedico:
     def set_paciente(self, paciente):
         self.__paciente = paciente
 
-
+#Creacion de la clase implante cadera
 class ImplanteCadera(ImplanteMedico):
     def __init__(self,tipo, funcion, material, tamaño, tipo_fijacion):
         super().__init__(tipo, funcion)
         self.__tipo_fijacion = tipo_fijacion
         self.__material = material
         self.__tamaño = tamaño
+
+    #Metodos de la clase
     def get_tipo_fijacion(self):
         return self.__tipo_fijacion
     def set_tipo_fijacion(self, tipo_fijacion):
@@ -65,7 +68,9 @@ class ImplanteCadera(ImplanteMedico):
         return self.__tamaño
     def set_tamaño(self, tamaño):
         self.__tamaño = tamaño
-        
+
+#La clase implante de rodilla hereda de la clase implante medico y la clase implante de cadera
+#solo que el codigo no me corria si le colocaba la herencia de ambas clases.      
 class ImplanteRodilla(ImplanteMedico):
     def __init__(self,tipo, funcion, material, tamaño, tipo_fijacion):
         super().__init__(tipo, funcion)
@@ -85,14 +90,14 @@ class ImplanteRodilla(ImplanteMedico):
     def set_tamaño(self, tamaño):
         self.__tamaño = tamaño
 
-
+#Creacion de la clase mara¿capasos
 class Marcapasos(ImplanteMedico):
     def __init__(self, tipo, funcion, num_electrodos, conexion, frecuencia):
         super().__init__(tipo, funcion)
         self.__num_electrodos = num_electrodos
         self.__conexion = conexion
         self.__frecuencia= frecuencia
-    
+    #Metodos de la clase 
     def get_num_electrodos(self):
         return self.__num_electrodos
     def set_num_electrodos(self, num_electrodos):
@@ -105,14 +110,14 @@ class Marcapasos(ImplanteMedico):
         return self.__frecuencia
     def set_frecuencia(self, frecuencia):
         self.__frecuencia = frecuencia
-
+#Creacion de la clase stentCoronario
 class StentCoronario(ImplanteMedico):
     def __init__(self, funcion, tipo, longitud, diametro, material):
         super().__init__(tipo, funcion)
         self.__longitud = longitud
         self.__diametro = diametro
         self.__material= material
-
+ #Metodos de la clase
     def get_longitud(self):
         return self.__longitud
     def set_num_electrodos(self, longitud):
@@ -126,12 +131,15 @@ class StentCoronario(ImplanteMedico):
     def set_frecuencia(self, material):
         self.__material = material
 
+#creacion de la clase implante dental
 class ImplanteDental(ImplanteMedico):
     def __init__(self, funcion, tipo, forma, sis_fijacion, material):
         super().__init__(tipo, funcion)
         self.__material = material
         self.__sis_fijacion = sis_fijacion
         self.__forma = forma
+    
+    #metodos de la clase
     def get_sis_fijacion(self):
         return self.__sis_fijacion
     def set_tipo_fijacion(self, sis_fijacion):
@@ -145,13 +153,14 @@ class ImplanteDental(ImplanteMedico):
     def set_frecuencia(self, forma):
         self.__forma = forma
 
-
+#creacion de la clase paciente para luego relacionarla en la clase sistema
 class Paciente:
     def __init__(self, nombre, cedula):
         self.__nombre = nombre
         self.__cedula = cedula
         self.__implante_asignado = None  
 
+    #metodos de pacientes
     def set_implante(self, implante):
         self.__implante_asignado = implante
     def get_implante(self):
@@ -169,11 +178,14 @@ class Paciente:
     def set_cedula(self, cedula):
         self.__cedula = cedula
     
+
+#creacion de la clase que contiene el sistema
 class SistemaImplantes:
     def __init__(self):
+        #implementacion de listas para almacenar la informacion de implantes y pacientes
         self.lista_implantes = []
         self.lista_pacientes = []
-
+    
     def asignar_implante_paciente(self, implante, paciente, fecha_implantacion, medico_responsable, estado_implante):
         implante.set_paciente(paciente)
         paciente.set_implante(implante)
@@ -191,7 +203,7 @@ class SistemaImplantes:
     def realizar_seguimiento_vida_util_implante(self, implante, fechas_revision, mantenimiento):
         pass
     
-
+#funcion para el menu
 def mostrar_menu():
         int(input(""""Menú:
                 1. Agregar Implante
@@ -201,7 +213,7 @@ def mostrar_menu():
                 5. Salir
                 > """))
     
-
+#funcion para agregar implantes
 def agregar_implante(sistema):
     tipo = input("Tipo de implante: ")
     funcion = input("Función del implante: ")
@@ -215,7 +227,7 @@ def agregar_implante(sistema):
     sistema.asociar_implante_paciente(implante, paciente, fecha_implantacion, medico_responsable, estado_implante)
     sistema.lista_implantes.append(implante)
     print("Implante agregado exitosamente.")
-
+#funcion para eliminar implantes 
 def eliminar_implante(sistema):
     tipo = input("Ingrese el tipo de implante que desea eliminar: ")
     for implante in sistema.lista_implantes:
@@ -224,6 +236,8 @@ def eliminar_implante(sistema):
             print("Implante eliminado exitosamente.")
             return
     print("No se encontró ningún implante con el tipo especificado.")
+
+##funcion para editar implantes
 
 def editar_implante(self, tipo_implante):
         for implante in self.lista_implantes:
@@ -277,6 +291,8 @@ def editar_implante(self, tipo_implante):
                         print("Opción no válida.vuelva a intentarlo")
         print(f"No se encontró ningún implante de {tipo_implante}.")
 
+
+#funcion para vizualizar el inventario
 def visualizar_inventario(sistema):
     print("\nInventario de Implantes:")
     for implante in sistema.lista_implantes:
@@ -284,6 +300,8 @@ def visualizar_inventario(sistema):
                 Función: {implante.funcion}
                 Paciente: {implante.paciente}""")
 
+
+#Creacion de la interfaz de usuario
 def main():
     sistema = SistemaImplantes()
     while True:
