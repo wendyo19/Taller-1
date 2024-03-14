@@ -170,8 +170,8 @@ class Paciente:
         self.__cedula = cedula
     
 class SistemaImplantes:
-    def __init__(self, lista_implantes):
-        self.lista_implantes = lista_implantes
+    def __init__(self):
+        self.lista_implantes = []
         self.lista_pacientes = []
 
     def asignar_implante_paciente(self, implante, paciente, fecha_implantacion, medico_responsable, estado_implante):
@@ -183,7 +183,66 @@ class SistemaImplantes:
 
     def realizar_seguimiento_vida_util_implante(self, implante, fechas_revision, mantenimiento):
         pass
+    
 
+def mostrar_menu():
+        int(input(""""Menú:
+                1. Agregar Implante
+                2. Eliminar Implante
+                3. Editar Información de Implante
+                4. Visualizar Inventario
+                5. Salir
+                > """))
+    
 
+def agregar_implante(sistema):
+    tipo = input("Tipo de implante: ")
+    funcion = input("Función del implante: ")
+    paciente = input("Nombre del paciente: ")
+    implante = ImplanteMedico(tipo, funcion, paciente)
+    sistema.lista_implantes.append(implante)
+    print("Implante agregado exitosamente.")
 
-lista_implantes = []
+def eliminar_implante(sistema):
+    tipo = input("Ingrese el tipo de implante que desea eliminar: ")
+    for implante in sistema.lista_implantes:
+        if implante.tipo == tipo:
+            sistema.lista_implantes.remove(implante)
+            print("Implante eliminado exitosamente.")
+            return
+    print("No se encontró ningún implante con el tipo especificado.")
+
+def editar_implante(sistema):
+    tipo = input("Ingrese el tipo de implante que desea editar: ")
+    for implante in sistema.lista_implantes:
+        if implante.tipo == tipo:
+            # falta proceso para ediatr implante
+            print("Información del implante editada exitosamente.")
+            return
+    print("No se encontró ningún implante con el tipo especificado.")
+
+def visualizar_inventario(sistema):
+    print("\nInventario de Implantes:")
+    for implante in sistema.lista_implantes:
+        print(f"Tipo: {implante.tipo}, Función: {implante.funcion}, Paciente: {implante.paciente}")
+
+def main():
+    sistema = SistemaImplantes()
+    while True:
+        mostrar_menu()
+        opcion = input("\nIngrese el número de la opción que desea: ")
+        if opcion == 1:
+            agregar_implante(sistema)
+        elif opcion == 2:
+            eliminar_implante(sistema)
+        elif opcion == 3:
+            editar_implante(sistema)
+        elif opcion == 4:
+            visualizar_inventario(sistema)
+        elif opcion == 5:
+            break
+        else:
+            print("Opción no válida.vuelva a intentarlo")
+
+if __name__ == "__main__":
+    main()
