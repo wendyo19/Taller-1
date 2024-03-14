@@ -1,9 +1,36 @@
+import datetime
 class ImplanteMedico:
     def __init__(self, tipo, funcion, paciente):
         self.__tipo = tipo
         self.__funcion = funcion
         self.__paciente = paciente
+        self.__fecha_implantacion = None
+        self.__medico_responsable = None
+        self.__estado_implante = None
 
+    def set_fecha_implantacion(self, fecha_implantacion):
+        try:
+            datetime.datetime.strptime(fecha_implantacion, "%Y-%m-%d")
+        except ValueError:
+            print("La fecha de implantación no es válida. debe ser de tipo 'YYYY-MM-DD'.")
+            return
+        self.__fecha_implantacion = fecha_implantacion
+
+    def get_fecha_implantacion(self):
+        return self.__fecha_implantacion
+
+    def set_medico_responsable(self, medico_responsable):
+        self.__medico_responsable = medico_responsable
+
+    def get_medico_responsable(self):
+        return self.__medico_responsable
+
+    def set_estado_implante(self, estado_implante):
+        self.__estado_implante = estado_implante
+
+    def get_estado_implante(self):
+        return self.__estado_implante
+    
     def get_tipo(self):
         return self.__tipo
 
@@ -120,9 +147,18 @@ class ImplanteDental(ImplanteMedico):
 
 
 class Paciente:
-    def __init__(self, nombre, cedual):
+    def __init__(self, nombre, cedula):
         self.__nombre = nombre
         self.__cedula = cedula
+        self.__implante_asignado = None  
+
+    def set_implante(self, implante):
+        self.__implante_asignado = implante
+    def get_implante(self):
+        return self.__implante_asignado
+
+    def obtener_implante_asignado(self):
+        return self.implante_asignado
       
     def get_nombre(self):
         return self.__nombre
@@ -131,7 +167,7 @@ class Paciente:
     def set_nombre(self, nombre):
         self.__nombre = nombre
     def set_cedula(self, cedula):
-        self.__cedual = cedula
+        self.__cedula = cedula
     
 class SistemaImplantes:
     def __init__(self, lista_implantes):
@@ -139,22 +175,15 @@ class SistemaImplantes:
         self.lista_pacientes = []
 
     def asignar_implante_paciente(self, implante, paciente, fecha_implantacion, medico_responsable, estado_implante):
-
-        pass
-
-    def registrar_fecha_implantacion(self, implante, fecha_implantacion):
-        
-        pass
-
-    def registrar_medico_responsable(self, implante, medico_responsable):
-        
-        pass
-
-    def registrar_estado_implante(self, implante, estado_implante):
-        
-        pass
+        implante.set_paciente(paciente)
+        paciente.set_implante(implante)
+        self.set_fecha_implantacion(implante, fecha_implantacion)
+        self.set_medico_responsable(implante, medico_responsable)
+        self.set_estado_implante(implante, estado_implante)
 
     def realizar_seguimiento_vida_util_implante(self, implante, fechas_revision, mantenimiento):
         pass
+
+
 
 lista_implantes = []
